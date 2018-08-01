@@ -23,6 +23,7 @@ import javax.swing.JRadioButton;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
+import javax.swing.JCheckBox;
 
 public class Form extends JFrame implements ActionListener {
 
@@ -30,6 +31,9 @@ public class Form extends JFrame implements ActionListener {
 	JPanel_1 jPanel_1 = new JPanel_1();
 	JPanel panel_2 = new JPanel();
 	JPanel_2 jPanel_2 = new JPanel_2();
+	private final JLabel lblNewLabel = new JLabel("");
+	private final JLabel lblPlaySoccer = new JLabel("Play Soccer");
+	private final JLabel lblc = new JLabel("Copyright ⓒ 2018 by 김형민");
 
 	/**
 	 * Launch the application.
@@ -39,26 +43,40 @@ public class Form extends JFrame implements ActionListener {
 	 * Create the frame.
 	 */
 	public Form() {
-		jPanel_2.setBounds(0, 0, 0, 643);
+		jPanel_2.setBounds(0, 0, 1, 643);
 		jPanel_1.setBounds(0, 0, 370, 643);
+
 
 		panel.add(jPanel_1);
 		panel.add(jPanel_2);
 
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		setBounds(100, 100, 939, 732);
+		setBounds(100, 100, 892, 732);
 		getContentPane().setLayout(null);
 
-		panel.setBounds(0, 0, 907, 644);
+		panel.setBounds(0, 0, 876, 644);
 		getContentPane().add(panel);
 		panel.setLayout(null);
 
 		panel_2.setBackground(new Color(255, 255, 255));
-		panel_2.setBounds(371, 0, 536, 643);
+		panel_2.setBounds(367, 0, 509, 643);
 		panel.add(panel_2);
 		panel_2.setLayout(null);
+		lblNewLabel.setIcon(new ImageIcon(Form.class.getResource("/images/football2.png")));
+		lblNewLabel.setBounds(130, 142, 288, 276);
+		
+		panel_2.add(lblNewLabel);
+		lblPlaySoccer.setFont(new Font("AmeriGarmnd BT", Font.BOLD, 32));
+		lblPlaySoccer.setBounds(140, 413, 295, 79);
+		
+		panel_2.add(lblPlaySoccer);
+		lblc.setFont(new Font("굴림", Font.BOLD, 17));
+		lblc.setBounds(253, 608, 239, 35);
+		
+		panel_2.add(lblc);
 
 		start();
+		this.setDefaultLookAndFeelDecorated(true);
 
 		setVisible(true);
 
@@ -316,6 +334,10 @@ class GoThread2 extends Thread {
 		System.out.println(object);
 		for (int i = 0; i <= 370; i = i + 4) {
 			try {
+				form.jPanel_2.setDoubleBuffered(true);
+				form.jPanel_1.setDoubleBuffered(true);
+
+				
 				if (Thread.currentThread().getName().equals("회원가입화면")) {
 					Thread.sleep(10);
 					if (object.equals("Back")) {
