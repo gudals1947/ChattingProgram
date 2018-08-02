@@ -9,5 +9,6 @@
 	<classpathentry kind="lib" path="Look/JTattoo.jar"/>
 	<classpathentry kind="lib" path="Look/liquidlnf.jar"/>
 	<classpathentry kind="lib" path="Look/quaqua.jar"/>
+	<classpathentry kind="lib" path="Look/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

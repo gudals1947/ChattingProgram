@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Container;
 import java.awt.Insets;
 import java.awt.Panel;
-
 import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -298,7 +297,7 @@ class GoThread extends Thread {
 	@Override
 	public void run() {
 		// TODO Auto-generated method stub
-		for (int i = 370; i >= 0; i = i - 4) {
+		for (int i = 370; i >= -30; i = i - 15) {
 			try {
 				if (Thread.currentThread().getName().equals("로그인화면")) {
 					Thread.sleep(10);
@@ -332,7 +331,7 @@ class GoThread2 extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		System.out.println(object);
-		for (int i = 0; i <= 370; i = i + 4) {
+		for (int i = -30; i <= 370; i = i + 15) {
 			try {
 				form.jPanel_2.setDoubleBuffered(true);
 				form.jPanel_1.setDoubleBuffered(true);
@@ -342,7 +341,7 @@ class GoThread2 extends Thread {
 					Thread.sleep(10);
 					if (object.equals("Back")) {
 						form.jPanel_2.setBounds(form.jPanel_2.getBounds().x, form.jPanel_2.getBounds().y,
-								(370 - i) - 4, form.jPanel_2.getBounds().height);
+								(370 - i) - 15, form.jPanel_2.getBounds().height);
 					} else {
 						form.jPanel_2.setBounds(form.jPanel_2.getBounds().x, form.jPanel_2.getBounds().y, i,
 								form.jPanel_1.getBounds().height);
