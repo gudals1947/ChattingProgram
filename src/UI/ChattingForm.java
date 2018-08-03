@@ -2,11 +2,9 @@ package UI;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
 import ChattingSouce.*;
 import java.awt.Color;
 import java.awt.Event;
@@ -15,6 +13,8 @@ import javax.swing.ImageIcon;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.util.ArrayList;
@@ -29,7 +29,6 @@ import com.jgoodies.forms.layout.FormSpecs;
 import net.miginfocom.swing.MigLayout;
 import javax.swing.UIManager;
 import java.awt.GridLayout;
-
 import javax.swing.BorderFactory;
 import javax.swing.BoxLayout;
 import javax.swing.GroupLayout;
@@ -43,21 +42,67 @@ import java.awt.event.MouseAdapter;
 import javax.swing.JSlider;
 import javax.swing.JEditorPane;
 
-class MouseMotionClass extends MouseAdapter{
+class MouseMotionClass extends MouseAdapter {
 	ChattingForm superClass;
 	APIExamSearchBlog apiExamSearchBlog;
+	ArrayList<String> title = new ArrayList<String>();
+
 	public MouseMotionClass(ChattingForm chattingForm, APIExamSearchBlog apiExamSearchBlog) {
 		// TODO Auto-generated constructor stub
 		this.superClass = chattingForm;
 		this.apiExamSearchBlog = apiExamSearchBlog;
 	}
+
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
+		title.removeAll(title);
 		apiExamSearchBlog.searchBlog(superClass.tfSearch.getText());
-		
+		title = apiExamSearchBlog.getTitle();
+		System.out.println("title:" + title);
+		for (int i = 0; i < superClass.lbBlogTitle.length; i++) {
+			superClass.lbBlogTitle[i].setText("<html><body><a href=http:책 더보기>" + title.get(i) + "</body></html>");
+		}
 		super.mouseClicked(e);
 	}
+}
+
+class KeyBoardClass extends KeyAdapter {
+	ChattingForm superClass;
+	APIExamSearchBlog apiExamSearchBlog;
+	ArrayList<String> title = new ArrayList<String>();
+	ArrayList<String> postdate = new ArrayList<String>();
+	ArrayList<String> contents = new ArrayList<String>();
+
+	public KeyBoardClass(ChattingForm chattingForm, APIExamSearchBlog apiExamSearchBlog) {
+		// TODO Auto-generated constructor stub
+		this.superClass = chattingForm;
+		this.apiExamSearchBlog = apiExamSearchBlog;
+	}
+
+	@Override
+	public void keyReleased(KeyEvent e) {
+		// TODO Auto-generated method stub
+		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+			Removelist();
+			apiExamSearchBlog.searchBlog(superClass.tfSearch.getText());
+			title = apiExamSearchBlog.getTitle();
+			postdate = apiExamSearchBlog.getPostdate();
+			contents = apiExamSearchBlog.getContents();
+		    for (int i = 0; i < superClass.lbBlogTitle.length; i++) {
+				superClass.lbBlogTitle[i].setText("<html><body><a href=http:책 더보기>" + title.get(i) + "</a><b style='color:gray'> &nbsp; &nbsp;"+ postdate.get(i)+"</b></body></html>");
+				superClass.lbBlogContents[i].setText("<html><body>"+contents+"<body></html>");
+		    }
+		}
+		super.keyReleased(e);
+	}
+	private void Removelist() {
+		// TODO Auto-generated method stub
+		title.removeAll(title);
+		postdate.removeAll(postdate);
+		contents.removeAll(contents);
+	}
+
 }
 
 public class ChattingForm extends JFrame implements MouseListener {
@@ -86,19 +131,23 @@ public class ChattingForm extends JFrame implements MouseListener {
 	int key = 0;
 	JTextField tfSearch;
 	private final JLabel label_1 = new JLabel("KHMCS");
-	private final JLabel label_3 = new JLabel("블로그");
-	private final JLabel label_4 = new JLabel("뉴스");
-	private final JLabel label_5 = new JLabel("책");
-	private final JPanel panel_1 = new JPanel();
-	private final JPanel panel_2 = new JPanel();
-	private final JPanel panel_3 = new JPanel();
-	private final JPanel panel_4 = new JPanel();
-	private final JPanel panel_5 = new JPanel();
-	private final JLabel lblNewLabel = new JLabel("블로그");
-	private final JLabel label_6 = new JLabel("뉴스");
-	private final JLabel label_7 = new JLabel("책");
-	private final JEditorPane editorPane_1 = new JEditorPane();
-	private final JEditorPane editorPane_2 = new JEditorPane();
+	private final JLabel lbBarBlog = new JLabel("블로그");
+	private final JLabel lbBarNew = new JLabel("뉴스");
+	private final JLabel lbBarBook = new JLabel("책");
+	private final JPanel plBar = new JPanel();
+	private final JPanel plContent = new JPanel();
+	private final JPanel plBlog = new JPanel();
+	private final JPanel plNews = new JPanel();
+	private final JPanel plBooks = new JPanel();
+	private final JLabel lbBlog = new JLabel("블로그");
+	private final JLabel lbNews = new JLabel("뉴스");
+	private final JLabel lbBook = new JLabel("책");
+	private final JEditorPane edNews = new JEditorPane();
+	private final JEditorPane edBook = new JEditorPane();
+	JPanel plBlogContent = new JPanel();
+	JPanel plBlogContents[] = new JPanel[2];
+	JEditorPane lbBlogTitle[] = new JEditorPane[2];
+	JEditorPane lbBlogContents[] = new JEditorPane[2];
 
 	public ChattingForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -150,7 +199,7 @@ public class ChattingForm extends JFrame implements MouseListener {
 		plHome.setBackground(Color.CYAN);
 		plHome.setBounds(709, 0, 52, 53);
 		pl_North.add(plHome);
-
+		
 		plHome.add(lbhome);
 		lbhome.setBackground(new Color(255, 255, 255));
 		lbhome.setIcon(new ImageIcon(ChattingForm.class.getResource("/images/home(2).png")));
@@ -159,7 +208,7 @@ public class ChattingForm extends JFrame implements MouseListener {
 		lblist.setBounds(17, 9, 37, 35);
 		pl_North.add(lblist);
 		pl_left.setBackground(Color.BLACK);
-//		System.out.println(this.getBounds().height);
+		// System.out.println(this.getBounds().height);
 
 		pl_left.setBounds(0, 53, 0, this.getBounds().height);
 		contentPane.add(pl_left);
@@ -169,13 +218,13 @@ public class ChattingForm extends JFrame implements MouseListener {
 		label.setFont(new Font("굴림", Font.PLAIN, 15));
 		label.setBounds(4, 203, 137, 35);
 		pl_left.add(label);
-		
+
 		JPanel pl_home = new JPanel();
 		pl_home.setBackground(Color.WHITE);
 		pl_home.setBounds(0, 53, 1038, 1144);
 		contentPane.add(pl_home);
 		pl_home.setLayout(null);
-		
+
 		tfSearch = new JTextField();
 		tfSearch.setHorizontalAlignment(SwingConstants.LEFT);
 		tfSearch.setFont(new Font("맑은 고딕", Font.PLAIN, 30));
@@ -183,104 +232,128 @@ public class ChattingForm extends JFrame implements MouseListener {
 		tfSearch.setBounds(219, 70, 552, 41);
 		pl_home.add(tfSearch);
 		tfSearch.setColumns(10);
+		tfSearch.addKeyListener(new KeyBoardClass(this, new APIExamSearchBlog()));
 		label_1.setForeground(new Color(50, 205, 50));
 		label_1.setFont(new Font("굴림", Font.PLAIN, 35));
 		label_1.setBounds(46, 73, 123, 35);
-		
+
 		pl_home.add(label_1);
-		
-		JPanel panel = new JPanel();
-		panel.setBackground(new Color(50, 205, 50));
-		panel.setBorder(new LineBorder(new Color(50, 205, 50), 2, true));
-		panel.setBounds(770, 70, 53, 41);
-		pl_home.add(panel);
-		panel.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
-		
+
+		JPanel plSearch = new JPanel();
+		plSearch.setBackground(new Color(50, 205, 50));
+		plSearch.setBorder(new LineBorder(new Color(50, 205, 50), 2, true));
+		plSearch.setBounds(770, 70, 53, 41);
+		pl_home.add(plSearch);
+		plSearch.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+
 		JLabel lbsearch = new JLabel("");
-		lbsearch.addMouseListener(new MouseMotionClass(this,new APIExamSearchBlog()));
+		lbsearch.addMouseListener(new MouseMotionClass(this, new APIExamSearchBlog()));
 		lbsearch.setIcon(new ImageIcon(ChattingForm.class.getResource("/images/search.png")));
-		panel.add(lbsearch);
-		
+		plSearch.add(lbsearch);
+
 		JSeparator separator = new JSeparator();
 		separator.setBounds(0, 172, 964, 2);
 		pl_home.add(separator);
-		
+
 		JSeparator separator_1 = new JSeparator();
 		separator_1.setBounds(0, 223, 964, 2);
 		pl_home.add(separator_1);
-		panel_1.setBackground(new Color(255, 255, 255));
-		panel_1.setBounds(0, 172, 964, 53);
-		
-		pl_home.add(panel_1);
-		panel_1.setLayout(new GridLayout(1, 0, 10, 0));
-		
-		JLabel label_2 = new JLabel("통합검색");
-		panel_1.add(label_2);
-		label_2.setFont(new Font("HY엽서M", Font.PLAIN, 30));
-		label_2.setForeground(new Color(50, 205, 50));
-		panel_1.add(label_3);
-		label_3.setForeground(new Color(0, 0, 0));
-		label_3.setFont(new Font("HY엽서M", Font.PLAIN, 30));
-		panel_1.add(label_4);
-		label_4.setForeground(new Color(0, 0, 0));
-		label_4.setFont(new Font("HY엽서M", Font.PLAIN, 30));
-		panel_1.add(label_5);
-		label_5.setForeground(new Color(0, 0, 0));
-		label_5.setFont(new Font("HY엽서M", Font.PLAIN, 30));
-		panel_2.setBackground(new Color(255, 255, 255));
-		panel_2.setBounds(0, 223, 964, 921);
-		
-		pl_home.add(panel_2);
-		panel_2.setLayout(new GridLayout(0, 1, 0, 0));
-		panel_3.setBackground(new Color(255, 255, 255));
-		
-		panel_2.add(panel_3);
-		panel_3.setLayout(null);
-		lblNewLabel.setFont(new Font("굴림", Font.PLAIN, 27));
-		lblNewLabel.setBounds(0, 25, 137, 35);
-		
-		panel_3.add(lblNewLabel);
-		
-		JEditorPane editorPane = new JEditorPane();
-		editorPane.setFont(new Font("굴림", Font.PLAIN, 17));
-		editorPane.setText("블로그 더보기");
-		editorPane.setBounds(802, 272, 162, 35);
-		editorPane.setContentType("text/html");
-		editorPane.setEditable(false);
-		editorPane.setText("<html><body><a href=http:블로그 더보기>블로그 더보기</body></html>");
-		panel_3.add(editorPane);
-		panel_4.setBackground(new Color(255, 255, 255));
-		
-		panel_2.add(panel_4);
-		panel_4.setLayout(null);
-		label_6.setFont(new Font("굴림", Font.PLAIN, 27));
-		label_6.setBounds(0, 25, 137, 35);
-		
-		panel_4.add(label_6);
-		editorPane_1.setText("뉴스 더보기");
-		editorPane_1.setFont(new Font("굴림", Font.PLAIN, 17));
-		editorPane_1.setContentType("text/html");
-		editorPane_1.setEditable(false);
-		editorPane_1.setText("<html><body><a href=http:뉴스 더보기>뉴스 더보기</body></html>");
-		editorPane_1.setBounds(802, 272, 162, 35);
-		
-		panel_4.add(editorPane_1);
-		panel_5.setBackground(new Color(255, 255, 255));
-		
-		panel_2.add(panel_5);
-		panel_5.setLayout(null);
-		label_7.setFont(new Font("굴림", Font.PLAIN, 27));
-		label_7.setBounds(0, 25, 137, 35);
-		
-		panel_5.add(label_7);
-		editorPane_2.setText("책 더보기");
-		editorPane_2.setFont(new Font("굴림", Font.PLAIN, 17));
-		editorPane_2.setContentType("text/html");
-		editorPane_2.setEditable(false);
-		editorPane_2.setText("<html><body><a href=http:책 더보기>책 더보기</body></html>");
-		editorPane_2.setBounds(802, 272, 162, 35);
-		
-		panel_5.add(editorPane_2);
+		plBar.setBackground(new Color(255, 255, 255));
+		plBar.setBounds(0, 172, 964, 53);
+
+		pl_home.add(plBar);
+		plBar.setLayout(new GridLayout(1, 0, 10, 0));
+
+		JLabel lbBarSearch = new JLabel("통합검색");
+		plBar.add(lbBarSearch);
+		lbBarSearch.setFont(new Font("HY엽서M", Font.PLAIN, 30));
+		lbBarSearch.setForeground(new Color(50, 205, 50));
+		plBar.add(lbBarBlog);
+		lbBarBlog.setForeground(new Color(0, 0, 0));
+		lbBarBlog.setFont(new Font("HY엽서M", Font.PLAIN, 30));
+		plBar.add(lbBarNew);
+		lbBarNew.setForeground(new Color(0, 0, 0));
+		lbBarNew.setFont(new Font("HY엽서M", Font.PLAIN, 30));
+		plBar.add(lbBarBook);
+		lbBarBook.setForeground(new Color(0, 0, 0));
+		lbBarBook.setFont(new Font("HY엽서M", Font.PLAIN, 30));
+		plContent.setBackground(new Color(255, 255, 255));
+		plContent.setBounds(10, 223, 964, 921);
+
+		pl_home.add(plContent);
+		plContent.setLayout(new GridLayout(0, 1, 0, 0));
+		plBlog.setBackground(new Color(255, 255, 255));
+
+		plContent.add(plBlog);
+		plBlog.setLayout(null);
+		lbBlog.setFont(new Font("굴림", Font.PLAIN, 27));
+		lbBlog.setBounds(0, 0, 137, 35);
+
+		plBlog.add(lbBlog);
+
+		JEditorPane edBlog = new JEditorPane();
+		edBlog.setFont(new Font("굴림", Font.PLAIN, 17));
+		edBlog.setBounds(802, 272, 162, 35);
+		edBlog.setContentType("text/html");
+		edBlog.setEditable(false);
+		edBlog.setText("<html><body><a href=http:블로그 더보기>블로그 더보기</body></html>");
+		plBlog.add(edBlog);
+
+		plBlogContent.setBackground(Color.WHITE);
+		plBlogContent.setBounds(0, 65, 964, 204);
+		plBlog.add(plBlogContent);
+		plBlogContent.setLayout(new GridLayout(0, 1, 0, 0));
+		plNews.setBackground(new Color(255, 255, 255));
+
+		plContent.add(plNews);
+		plNews.setLayout(null);
+		lbNews.setFont(new Font("굴림", Font.PLAIN, 27));
+		lbNews.setBounds(0, 0, 137, 35);
+
+		plNews.add(lbNews);
+		edNews.setFont(new Font("굴림", Font.PLAIN, 17));
+		edNews.setContentType("text/html");
+		edNews.setEditable(false);
+		edNews.setText("<html><body><a href=http:뉴스 더보기>뉴스 더보기</body></html>");
+		edNews.setBounds(802, 272, 162, 35);
+
+		plNews.add(edNews);
+		plBooks.setBackground(new Color(255, 255, 255));
+
+		plContent.add(plBooks);
+		plBooks.setLayout(null);
+		lbBook.setFont(new Font("굴림", Font.PLAIN, 27));
+		lbBook.setBounds(0, 0, 137, 35);
+
+		plBooks.add(lbBook);
+		edBook.setText("책 더보기");
+		edBook.setFont(new Font("굴림", Font.PLAIN, 17));
+		edBook.setContentType("text/html");
+		edBook.setEditable(false);
+		edBook.setText("<html><body><a href=http:책 더보기>책 더보기</body></html>");
+		edBook.setBounds(802, 272, 162, 35);
+
+		plBooks.add(edBook);
+
+		for (int i = 0; i < plBlogContents.length; i++) {  //블로그 api따오기
+			plBlogContents[i] = new JPanel(new GridLayout(3, 1, 0, 0));
+			plBlogContents[i].setBackground(Color.white);
+			lbBlogTitle[i] = new JEditorPane();
+			lbBlogContents[i] = new JEditorPane();
+
+		    plBlogContents[i].add(lbBlogTitle[i]);
+		    plBlogContents[i].add(lbBlogContents[i]);
+		    
+			plBlogContent.add(plBlogContents[i]);
+			
+			lbBlogTitle[i].setContentType("text/html");
+			lbBlogTitle[i].setEditable(false);
+						
+			lbBlogContents[i].setContentType("text/html");
+			lbBlogContents[i].setEditable(false);
+			
+			
+		}
 
 		start();
 		this.setVisible(true);
@@ -299,11 +372,12 @@ public class ChattingForm extends JFrame implements MouseListener {
 	@Override
 	public void mouseClicked(MouseEvent e) {
 		for (int i = 0; i < upLable.length; i++) { // 위쪽상단바
-			if (e.getSource() == upLable[i] && upLable[i].getName().equals("위쪽상단아이콘") && boolIcon[i] == false&&e.getSource()!=lblist) {
+			if (e.getSource() == upLable[i] && upLable[i].getName().equals("위쪽상단아이콘") && boolIcon[i] == false
+					&& e.getSource() != lblist) {
 				upLable[i].setIcon(new ImageIcon(ChattingForm.class.getResource("/images/" + iconpath[i] + "(2).png")));
 				upPanel[i].setBackground(Color.CYAN);
 				boolIcon[i] = true;
-			} else if (e.getSource() != upLable[i]&&e.getSource()!=lblist) {
+			} else if (e.getSource() != upLable[i] && e.getSource() != lblist) {
 				upLable[i].setIcon(new ImageIcon(ChattingForm.class.getResource("/images/" + iconpath[i] + ".png")));
 				upPanel[i].setBackground(Color.black);
 				boolIcon[i] = false;
@@ -380,7 +454,17 @@ class LeftThread extends Thread {
 	public void run() {
 		// TODO Auto-generated method stub
 		if (key == 1) {
-			for (int i = 0; i < 214; i = i+15) {
+			for (int i = 0; i < 214; i = i + 15) {
+				try {
+					Thread.sleep(10);
+					chattingForm.pl_left.setSize(i, chattingForm.getBounds().height);
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+		} else if (key == 0) {
+			for (int i = chattingForm.pl_left.getWidth(); i >= 0; i = i - 15) {
 				try {
 					Thread.sleep(10);
 					chattingForm.pl_left.setSize(i, chattingForm.getBounds().height);
@@ -390,19 +474,6 @@ class LeftThread extends Thread {
 				}
 			}
 		}
-		else if (key == 0) {
-			for (int i = chattingForm.pl_left.getWidth(); i >=0; i = i-15) {
-				try {
-					Thread.sleep(10);
-					chattingForm.pl_left.setSize(i, chattingForm
-							.getBounds().height);
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-		}
 		super.run();
 	}
 }
-

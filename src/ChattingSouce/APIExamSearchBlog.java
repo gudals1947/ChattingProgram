@@ -4,16 +4,19 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
-import java.util.HashMap;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Calendar;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.JSONValue;
-import org.json.simple.parser.JSONParser;
-import UI.Form;
-import UI.ChattingForm;
 
 public class APIExamSearchBlog {
+	private ArrayList<String> title = new ArrayList<String>();
+	private ArrayList<String> postdate = new ArrayList<String>();
+	private ArrayList<String> contents = new ArrayList<String>();
+
 
      public APIExamSearchBlog() {
 		// TODO Auto-generated constructor stub
@@ -54,12 +57,37 @@ public class APIExamSearchBlog {
              for(int i = 0 ; i < array.size() ; i++) {
              	JSONObject object2 =(JSONObject)array.get(i);
              	String s1 = (String) object2.get("title");
-             	System.out.println(s1.replace("<b>","").replace("</b>","").replace("&quot;",""));
+             	title.add(s1.replace("<b>","").replace("</b>","").replace("&quot;",""));
+             	contents.add((String)object2.get("description"));
+             	postdate.add(DuringDate((String) object2.get("postdate")));
+//             	postdate.add((String) object2.get("postdate"));
              }
+             System.out.println(postdate);
              
              br.close();
          } catch (Exception e) {
              System.out.println(e);
          }
+	}
+     String DuringDate(String date) {
+    	 int startYear = Integer.parseInt(date.substring(0,4));
+         int startMonth= Integer.parseInt(date.substring(4,6));
+         int startDate = Integer.parseInt(date.substring(6,8));
+         
+         Calendar cal = Calendar.getInstance();
+         cal.set(startYear, startMonth -1, startDate);
+         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+         return sdf.format(cal.getTime());
+         
+     }
+    
+     public ArrayList<String> getTitle() {
+		return title;
+	}
+     public ArrayList<String> getPostdate() {
+		return postdate;
+	}
+     public ArrayList<String> getContents() {
+		return contents;
 	}
 }
