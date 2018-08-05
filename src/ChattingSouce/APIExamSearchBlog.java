@@ -16,6 +16,9 @@ public class APIExamSearchBlog {
 	private ArrayList<String> title = new ArrayList<String>();
 	private ArrayList<String> postdate = new ArrayList<String>();
 	private ArrayList<String> contents = new ArrayList<String>();
+	private ArrayList<String> bloggerlink = new ArrayList<String>();
+	private ArrayList<String> bloggername = new ArrayList<String>();
+	private ArrayList<String> link = new ArrayList<String>();
 
 
      public APIExamSearchBlog() {
@@ -59,8 +62,10 @@ public class APIExamSearchBlog {
              	String s1 = (String) object2.get("title");
              	title.add(s1.replace("<b>","").replace("</b>","").replace("&quot;",""));
              	contents.add((String)object2.get("description"));
+             	bloggerlink.add(object2.get("bloggerlink").toString().replace("http://", ""));
+             	bloggername.add(object2.get("bloggername").toString());
              	postdate.add(DuringDate((String) object2.get("postdate")));
-//             	postdate.add((String) object2.get("postdate"));
+             	link.add((String)object2.get("link"));
              }
              System.out.println(postdate);
              
@@ -89,5 +94,14 @@ public class APIExamSearchBlog {
 	}
      public ArrayList<String> getContents() {
 		return contents;
+	}
+     public ArrayList<String> getBloggerlink() {
+		return bloggerlink;
+	}
+     public ArrayList<String> getBloggername() {
+		return bloggername;
+	}
+     public ArrayList<String> getLink() {
+		return link;
 	}
 }

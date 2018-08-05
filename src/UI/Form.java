@@ -92,6 +92,13 @@ public class Form extends JFrame implements ActionListener {
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		if (e.getSource() == jPanel_1.btnSingUp || e.getSource() == jPanel_2.btnBack) {
+			jPanel_1.textField_1.setText("");
+			jPanel_1.textField.setText("");
+			jPanel_2.textField_2.setText("");
+			jPanel_2.textField_5.setText("");
+			jPanel_2.tfpasswordfield.setText("");
+			jPanel_2.tfRepasswordfield.setText("");
+			
 			GoThread thread1 = new GoThread(this, e.getActionCommand());
 			GoThread2 thread2 = new GoThread2(this, e.getActionCommand());
 			thread1.setName("로그인화면");
@@ -107,10 +114,10 @@ public class Form extends JFrame implements ActionListener {
 }
 
 class JPanel_2 extends JPanel {
-	private JTextField textField_2;
-	private JPasswordField tfpasswordfield;
-	private JPasswordField tfRepasswordfield;
-	private JTextField textField_5;
+	JTextField textField_2;
+	JPasswordField tfpasswordfield;
+	JPasswordField tfRepasswordfield;
+	JTextField textField_5;
 	JButton btnBack = new JButton("Back");
 	JButton btnJoin = new JButton("Join");
 
@@ -333,8 +340,8 @@ class GoThread2 extends Thread {
 		System.out.println(object);
 		for (int i = -30; i <= 370; i = i + 15) {
 			try {
-				form.jPanel_2.setDoubleBuffered(true);
-				form.jPanel_1.setDoubleBuffered(true);
+//				form.jPanel_2.setDoubleBuffered(true);
+//				form.jPanel_1.setDoubleBuffered(true);
 
 				
 				if (Thread.currentThread().getName().equals("회원가입화면")) {
