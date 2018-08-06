@@ -1,218 +1,34 @@
 package UI;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import ChattingSouce.*;
 import java.awt.Color;
 import java.awt.Desktop;
-import java.awt.Event;
-import javax.swing.JLabel;
-import javax.swing.ImageIcon;
+import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.KeyAdapter;
-import java.awt.event.KeyEvent;
+import java.awt.GridLayout;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Stack;
+
+import javax.swing.*;
+import javax.swing.JEditorPane;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JSeparator;
-import java.awt.FlowLayout;
-import javax.swing.SwingConstants;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
-import net.miginfocom.swing.MigLayout;
-import javax.swing.UIManager;
-import java.awt.GridLayout;
-import javax.swing.BorderFactory;
-import javax.swing.BoxLayout;
-import javax.swing.GroupLayout;
-import javax.swing.GroupLayout.Alignment;
 import javax.swing.JTextField;
-import javax.swing.JButton;
-import javax.swing.JScrollPane;
-import javax.swing.JList;
+import javax.swing.SwingConstants;
+import javax.swing.border.EmptyBorder;
 import javax.swing.border.LineBorder;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import java.awt.event.MouseAdapter;
-import javax.swing.JSlider;
-import javax.swing.JEditorPane;
-
-class HyperlinkClass extends MouseAdapter {
-	int cheak;
-	ChattingForm form;
-	String name;
-
-	public HyperlinkClass(ChattingForm form, int cheak, String name) {
-		// TODO Auto-generated constructor stub
-		this.cheak = cheak;
-		this.form = form;
-		this.name = name;
-	}
-
-	@Override
-	public void mousePressed(MouseEvent e) {
-		// TODO Auto-generated method stub
-		if (name.equals("블로그")) {
-			if (e.getSource() == form.lbBlogTitle[cheak]) {
-				form.lbBlogTitle[cheak].addHyperlinkListener(new HyperlinkListener() {
-					URI uri;
-
-					@Override
-					public void hyperlinkUpdate(HyperlinkEvent e) {
-						// TODO Auto-generated method stub
-
-						try {
-							uri = new URI(e.getURL().toString());
-							Desktop.getDesktop().browse(uri);
-						} catch (IOException | URISyntaxException e2) {
-							// TODO: handle exception
-						}
-						form.lbBlogTitle[cheak].removeHyperlinkListener(this);
-					}
-				});
-			}
-			else if(e.getSource() == form.lbBlogbotton[cheak]) {
-				form.lbBlogbotton[cheak].addHyperlinkListener(new HyperlinkListener() {
-					URI uri;
-
-					@Override
-					public void hyperlinkUpdate(HyperlinkEvent e) {
-						// TODO Auto-generated method stub
-
-						try {
-							uri = new URI(e.getURL().toString());
-							Desktop.getDesktop().browse(uri);
-						} catch (IOException | URISyntaxException e2) {
-							// TODO: handle exception
-						}
-						form.lbBlogbotton[cheak].removeHyperlinkListener(this);
-					}
-				});
-			}
-		}
-
-		super.mousePressed(e);
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		System.out.println("" + cheak);
-		// if (name.equals("블로그")) {
-		//
-		// form.lbBlogTitle[cheak].addHyperlinkListener(new HyperlinkListener() {
-		// URI uri;
-		//
-		// @Override
-		// public void hyperlinkUpdate(HyperlinkEvent e) {
-		// // TODO Auto-generated method stub
-		//
-		// try {
-		// uri = new URI(e.getURL().toString());
-		// Desktop.getDesktop().browse(uri);
-		// } catch (IOException | URISyntaxException e2) {
-		// // TODO: handle exception
-		// }
-		// form.lbBlogTitle[cheak].removeHyperlinkListener(this);
-		// }
-		// });
-		// }
-		super.mouseClicked(e);
-	}
-}
-
-class MouseMotionClass extends MouseAdapter {
-	ChattingForm superClass;
-	APIExamSearchBlog apiExamSearchBlog;
-	ArrayList<String> title = new ArrayList<String>();
-
-	public MouseMotionClass(ChattingForm chattingForm, APIExamSearchBlog apiExamSearchBlog) {
-		// TODO Auto-generated constructor stub
-		this.superClass = chattingForm;
-		this.apiExamSearchBlog = apiExamSearchBlog;
-	}
-
-	@Override
-	public void mouseClicked(MouseEvent e) {
-		// TODO Auto-generated method stub
-		title.removeAll(title);
-		apiExamSearchBlog.searchBlog(superClass.tfSearch.getText());
-		title = apiExamSearchBlog.getTitle();
-		System.out.println("title:" + title);
-		for (int i = 0; i < superClass.lbBlogTitle.length; i++) {
-			superClass.lbBlogTitle[i].setText("<html><body><a href=http:책 더보기>" + title.get(i) + "</body></html>");
-		}
-		super.mouseClicked(e);
-	}
-}
-
-class KeyBoardClass extends KeyAdapter {
-	ChattingForm superClass;
-	APIExamSearchBlog apiExamSearchBlog;
-	ArrayList<String> title = new ArrayList<String>();
-	ArrayList<String> postdate = new ArrayList<String>();
-	ArrayList<String> contents = new ArrayList<String>();
-	ArrayList<String> bloggerlink = new ArrayList<String>();
-	ArrayList<String> bloggername = new ArrayList<String>();
-	ArrayList<String> link = new ArrayList<String>();
-
-	public KeyBoardClass(ChattingForm chattingForm, APIExamSearchBlog apiExamSearchBlog) {
-		// TODO Auto-generated constructor stub
-		this.superClass = chattingForm;
-		this.apiExamSearchBlog = apiExamSearchBlog;
-	}
-
-	@Override
-	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
-		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-			Removelist();
-			apiExamSearchBlog.searchBlog(superClass.tfSearch.getText());
-			title = apiExamSearchBlog.getTitle();
-			postdate = apiExamSearchBlog.getPostdate();
-			contents = apiExamSearchBlog.getContents();
-			bloggername = apiExamSearchBlog.getBloggername();
-			bloggerlink = apiExamSearchBlog.getBloggerlink();
-			link = apiExamSearchBlog.getLink();
-
-			for (int i = 0; i < superClass.lbBlogTitle.length; i++) {
-				superClass.lbBlogTitle[i].setText("<html><body><a href='" + link.get(i) + "'>" + title.get(i)
-						+ "</a><b style='color:gray'> &nbsp; &nbsp;" + postdate.get(i) + "</b></body></html>");
-				superClass.lbBlogContents[i].setText("<html><body>" + contents.get(i) + "</body></html>");
-				superClass.lbBlogbotton[i].setText(
-						"<html><body><a href='" + link.get(i) + "' style='text-decoration:none'><b style='color:gray'>"
-								+ bloggername.get(i) + "</b>&nbsp;</a><a href='" + link.get(i)
-								+ "' style='text-decoration:none'><b style='color:green'>" + bloggerlink.get(i)
-								+ "</b></a></body></html>");
-			}
-		}
-		super.keyReleased(e);
-	}
-
-	private void Removelist() {
-		// TODO Auto-generated method stub
-		title.removeAll(title);
-		postdate.removeAll(postdate);
-		contents.removeAll(contents);
-		bloggerlink.removeAll(bloggerlink);
-		bloggername.removeAll(bloggername);
-		link.removeAll(link);
-	}
-
-}
+import ChattingSouce.APIExamSearchBlog;
+import ChattingSouce.APIExamSearchNews;
 
 public class ChattingForm extends JFrame implements MouseListener {
 
@@ -232,32 +48,38 @@ public class ChattingForm extends JFrame implements MouseListener {
 	JLabel label = new JLabel("회원이름적는곳");
 	JPanel plfriend = new JPanel();
 	JLabel lblist = new JLabel("");
-
 	JLabel[] upLable = new JLabel[] { lbchat, lbfreind, lbhome, lboption, lbLogout };
 	JPanel[] upPanel = new JPanel[] { plchat, plfriend, plHome, ploption, plLogout };
 	String[] iconpath = new String[] { "chat", "support", "home", "settings-work-tool", "logout" };
 	boolean[] boolIcon = new boolean[] { false, false, true, false, false };
 	int key = 0;
 	JTextField tfSearch;
-	private final JLabel label_1 = new JLabel("KHMCS");
-	private final JLabel lbBarBlog = new JLabel("블로그");
-	private final JLabel lbBarNew = new JLabel("뉴스");
-	private final JLabel lbBarBook = new JLabel("책");
-	private final JPanel plBar = new JPanel();
-	private final JPanel plContent = new JPanel();
-	private final JPanel plBlog = new JPanel();
-	private final JPanel plNews = new JPanel();
-	private final JPanel plBooks = new JPanel();
-	private final JLabel lbBlog = new JLabel("블로그");
-	private final JLabel lbNews = new JLabel("뉴스");
-	private final JLabel lbBook = new JLabel("책");
-	private final JEditorPane edNews = new JEditorPane();
-	private final JEditorPane edBook = new JEditorPane();
+	JLabel label_1 = new JLabel("KHMCS");
+	JLabel lbBarBlog = new JLabel("블로그");
+	JLabel lbBarNew = new JLabel("뉴스");
+	JLabel lbBarBook = new JLabel("책");
+	JPanel plBar = new JPanel();
+	JPanel plContent = new JPanel();
+	JPanel plBlog = new JPanel();
+	JPanel plNews = new JPanel();
+	JPanel plBooks = new JPanel();
+	JLabel lbBlog = new JLabel("블로그");
+	JLabel lbNews = new JLabel("뉴스");
+	JLabel lbBook = new JLabel("책");
+	JEditorPane edNews = new JEditorPane();
+	JEditorPane edBook = new JEditorPane();
 	JPanel plBlogContent = new JPanel();
+	JPanel plNewContent = new JPanel();
+
 	JPanel plBlogContents[] = new JPanel[2];
 	JEditorPane lbBlogTitle[] = new JEditorPane[2];
 	JEditorPane lbBlogContents[] = new JEditorPane[2];
 	JEditorPane lbBlogbotton[] = new JEditorPane[2];
+
+	JPanel plNewContents[] = new JPanel[2];
+	JEditorPane lbNewTitle[] = new JEditorPane[2];
+	JEditorPane lbNewContents[] = new JEditorPane[2];
+	JEditorPane lbNewbotton[] = new JEditorPane[2];
 
 	public ChattingForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -342,7 +164,7 @@ public class ChattingForm extends JFrame implements MouseListener {
 		tfSearch.setBounds(219, 70, 552, 41);
 		pl_home.add(tfSearch);
 		tfSearch.setColumns(10);
-		tfSearch.addKeyListener(new KeyBoardClass(this, new APIExamSearchBlog()));
+		tfSearch.addKeyListener(new KeyBoardClass(this, new APIExamSearchBlog(), new APIExamSearchNews()));
 		label_1.setForeground(new Color(50, 205, 50));
 		label_1.setFont(new Font("굴림", Font.PLAIN, 35));
 		label_1.setBounds(46, 73, 123, 35);
@@ -428,6 +250,11 @@ public class ChattingForm extends JFrame implements MouseListener {
 		edNews.setBounds(802, 272, 162, 35);
 
 		plNews.add(edNews);
+
+		plNewContent.setBackground(Color.WHITE);
+		plNewContent.setBounds(0, 60, 964, 204);
+		plNews.add(plNewContent);
+		plNewContent.setLayout(new GridLayout(0, 1, 0, 0));
 		plBooks.setBackground(new Color(255, 255, 255));
 
 		plContent.add(plBooks);
@@ -445,6 +272,43 @@ public class ChattingForm extends JFrame implements MouseListener {
 
 		plBooks.add(edBook);
 
+		blogSetting();
+		newSetting();
+
+		start();
+		this.setVisible(true);
+	}
+
+	private void newSetting() {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < plBlogContents.length; i++) { // 뉴스 api따오기
+			plNewContents[i] = new JPanel(new BorderLayout());
+			plNewContents[i].setBackground(Color.white);
+			lbNewTitle[i] = new JEditorPane();
+			lbNewContents[i] = new JEditorPane();
+			lbNewbotton[i] = new JEditorPane();
+			
+			plNewContents[i].add(lbNewTitle[i],BorderLayout.NORTH);
+			plNewContents[i].add(lbNewContents[i],BorderLayout.CENTER);
+			plNewContents[i].add(lbNewbotton[i],BorderLayout.SOUTH);
+			
+			plNewContent.add(plNewContents[i]);
+			
+			lbNewTitle[i].setContentType("text/html");
+			lbNewTitle[i].setEditable(false);
+
+			lbNewContents[i].setContentType("text/html");
+			lbNewContents[i].setEditable(false);
+
+			lbNewbotton[i].setContentType("text/html");
+			lbNewbotton[i].setEditable(false);
+		
+
+		}
+	}
+
+	private void blogSetting() {
+		// TODO Auto-generated method stub
 		for (int i = 0; i < plBlogContents.length; i++) { // 블로그 api따오기
 			plBlogContents[i] = new JPanel(new GridLayout(3, 1, 0, 0));
 			plBlogContents[i].setBackground(Color.white);
@@ -467,9 +331,6 @@ public class ChattingForm extends JFrame implements MouseListener {
 			lbBlogbotton[i].setContentType("text/html");
 			lbBlogbotton[i].setEditable(false);
 		}
-
-		start();
-		this.setVisible(true);
 	}
 
 	private void start() {
@@ -478,13 +339,13 @@ public class ChattingForm extends JFrame implements MouseListener {
 			upLable[i].addMouseListener(this);
 			upLable[i].setName("위쪽상단아이콘");
 		}
+		
 		lblist.addMouseListener(this);
 
 		for (int i = 0; i < lbBlogTitle.length; i++) {
 			lbBlogTitle[i].setName("블로그");
 			lbBlogbotton[i].setName("블로그");
 			lbBlogTitle[i].addMouseListener(new HyperlinkClass(this, i, lbBlogTitle[i].getName()));
-			// lbBlogContents[i].addHyperlinkListener(this);
 			lbBlogbotton[i].addMouseListener(new HyperlinkClass(this, i, lbBlogbotton[i].getName()));
 		}
 

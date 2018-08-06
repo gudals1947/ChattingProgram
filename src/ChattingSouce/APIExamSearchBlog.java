@@ -19,7 +19,7 @@ public class APIExamSearchBlog {
 	private ArrayList<String> bloggerlink = new ArrayList<String>();
 	private ArrayList<String> bloggername = new ArrayList<String>();
 	private ArrayList<String> link = new ArrayList<String>();
-
+	
 
      public APIExamSearchBlog() {
 		// TODO Auto-generated constructor stub
