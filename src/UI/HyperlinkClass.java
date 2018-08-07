@@ -6,12 +6,16 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
 
+import javax.swing.JEditorPane;
+import javax.swing.JLabel;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
 class HyperlinkClass extends MouseAdapter {
 	int cheak;
+	int remove;
 	ChattingForm form;
 	String name;
 
@@ -22,46 +26,36 @@ class HyperlinkClass extends MouseAdapter {
 		this.name = name;
 	}
 
-	
-
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		if (name.equals("블로그")) {
-			if (e.getSource() == form.lbBlogTitle[cheak]) {
-				form.lbBlogTitle[cheak].addHyperlinkListener(new HyperlinkListener() {
-					URI uri;
+		String str[] = { "블로그", "뉴스" };
+		ArrayList<JEditorPane[]> formlb = new ArrayList();
+		formlb.add(form.lbBlogTitle);
+		formlb.add(form.lbBlogbotton);
+		formlb.add(form.lbNewTitle);
+		for (int i = 0; i < str.length; i++) {
+			if (name.equals(str[i])) {
+				for (int j = 0; j < formlb.size(); j++) {
+					if (e.getSource() == formlb.get(j)[cheak]) {
+						remove = j;
+						formlb.get(remove)[cheak].addHyperlinkListener(new HyperlinkListener() {
+							URI uri;
+							@Override
+							public void hyperlinkUpdate(HyperlinkEvent e) {
+								// TODO Auto-generated method stub
 
-					@Override
-					public void hyperlinkUpdate(HyperlinkEvent e) {
-						// TODO Auto-generated method stub
-
-						try {
-							uri = new URI(e.getURL().toString());
-							Desktop.getDesktop().browse(uri);
-						} catch (IOException | URISyntaxException e2) {
-							// TODO: handle exception
-						}
-						form.lbBlogTitle[cheak].removeHyperlinkListener(this);
+								try {
+									uri = new URI(e.getURL().toString());
+									Desktop.getDesktop().browse(uri);
+								} catch (IOException | URISyntaxException e2) {
+									// TODO: handle exception
+								}
+								formlb.get(remove)[cheak].removeHyperlinkListener(this);
+							}
+						});
 					}
-				});
-			} else if (e.getSource() == form.lbBlogbotton[cheak]) {
-				form.lbBlogbotton[cheak].addHyperlinkListener(new HyperlinkListener() {
-					URI uri;
-
-					@Override
-					public void hyperlinkUpdate(HyperlinkEvent e) {
-						// TODO Auto-generated method stub
-
-						try {
-							uri = new URI(e.getURL().toString());
-							Desktop.getDesktop().browse(uri);
-						} catch (IOException | URISyntaxException e2) {
-							// TODO: handle exception
-						}
-						form.lbBlogbotton[cheak].removeHyperlinkListener(this);
-					}
-				});
+				}
 			}
 		}
 
