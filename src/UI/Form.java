@@ -45,7 +45,6 @@ public class Form extends JFrame implements ActionListener {
 		jPanel_2.setBounds(0, 0, 1, 643);
 		jPanel_1.setBounds(0, 0, 370, 643);
 
-
 		panel.add(jPanel_1);
 		panel.add(jPanel_2);
 

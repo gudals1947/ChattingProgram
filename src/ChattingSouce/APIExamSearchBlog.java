@@ -20,7 +20,8 @@ public class APIExamSearchBlog {
 	private ArrayList<String> bloggerlink = new ArrayList<String>();
 	private ArrayList<String> bloggername = new ArrayList<String>();
 	private ArrayList<String> link = new ArrayList<String>();
-
+	private String sort = "sim";
+	
 	public APIExamSearchBlog() {
 		// TODO Auto-generated constructor stub
 
@@ -33,7 +34,7 @@ public class APIExamSearchBlog {
 		String clientSecret = "_f3QPIbUxO";// 애플리케이션 클라이언트 시크릿값";
 		try {
 			String text = URLEncoder.encode(search, "UTF-8");
-			String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text; // json 결과
+			String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text+"&sort="+sort; // json 결과
 			// String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text;
 			// // xml 결과
 			URL url = new URL(apiURL);

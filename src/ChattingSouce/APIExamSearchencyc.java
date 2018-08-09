@@ -17,6 +17,8 @@ public class APIExamSearchencyc {
 	ArrayList<String> link = new ArrayList<>();
 	ArrayList<String> description = new ArrayList<>();
 	ArrayList<String> thumnail = new ArrayList<>();
+	private String sort = "sim";
+	
 
 	public APIExamSearchencyc() {
 		// TODO Auto-generated constructor stub
@@ -40,7 +42,7 @@ public class APIExamSearchencyc {
 		String clientSecret = "_f3QPIbUxO";// 애플리케이션 클라이언트 시크릿값";
 		try {
 			String text = URLEncoder.encode(search, "UTF-8");
-			String apiURL = "https://openapi.naver.com/v1/search/encyc?query=" + text; // json 결과
+			String apiURL = "https://openapi.naver.com/v1/search/encyc?query=" + text + "&sort="+sort; // json 결과
 			// String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text;
 			// // xml 결과
 			URL url = new URL(apiURL);
