@@ -21,7 +21,7 @@ class MouseMotionClass extends MouseAdapter {
 	public void mouseClicked(MouseEvent e) {
 		// TODO Auto-generated method stub
 		title.removeAll(title);
-		apiExamSearchBlog.searchBlog(superClass.tfSearch.getText());
+		apiExamSearchBlog.searchBlog(superClass.tfSearch.getText(),"sim");
 		title = apiExamSearchBlog.getTitle();
 		System.out.println("title:" + title);
 		for (int i = 0; i < superClass.lbBlogTitle.length; i++) {

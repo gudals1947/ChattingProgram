@@ -17,8 +17,6 @@ public class APIExamSearchencyc {
 	ArrayList<String> link = new ArrayList<>();
 	ArrayList<String> description = new ArrayList<>();
 	ArrayList<String> thumnail = new ArrayList<>();
-	private String sort = "sim";
-	
 
 	public APIExamSearchencyc() {
 		// TODO Auto-generated constructor stub
@@ -36,7 +34,7 @@ public class APIExamSearchencyc {
 		return description;
 	}
 
-	public void SearchEncyc(String search) {
+	public void SearchEncyc(String search,String sort) {
 		// TODO Auto-generated method stub
 		String clientId = "2j2upZhjOkmF_S7DA3lX";// 애플리케이션 클라이언트 아이디값";
 		String clientSecret = "_f3QPIbUxO";// 애플리케이션 클라이언트 시크릿값";

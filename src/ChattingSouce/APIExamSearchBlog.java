@@ -20,21 +20,21 @@ public class APIExamSearchBlog {
 	private ArrayList<String> bloggerlink = new ArrayList<String>();
 	private ArrayList<String> bloggername = new ArrayList<String>();
 	private ArrayList<String> link = new ArrayList<String>();
-	private String sort = "sim";
+	private String sort;
 	
 	public APIExamSearchBlog() {
 		// TODO Auto-generated constructor stub
 
 	}
 
-	public void searchBlog(String search) {
+	public void searchBlog(String search,String sort) {
 		// TODO Auto-generated method stub
-
+		this.sort = sort;
 		String clientId = "2j2upZhjOkmF_S7DA3lX";// 애플리케이션 클라이언트 아이디값";
 		String clientSecret = "_f3QPIbUxO";// 애플리케이션 클라이언트 시크릿값";
 		try {
 			String text = URLEncoder.encode(search, "UTF-8");
-			String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text+"&sort="+sort; // json 결과
+			String apiURL = "https://openapi.naver.com/v1/search/blog?query=" + text+"&display=30&sort="+sort; // json 결과
 			// String apiURL = "https://openapi.naver.com/v1/search/blog.xml?query="+ text;
 			// // xml 결과
 			URL url = new URL(apiURL);
@@ -70,6 +70,7 @@ public class APIExamSearchBlog {
 				postdate.add(DuringDate((String) object2.get("postdate")));
 				link.add((String) object2.get("link"));
 			}
+
 
 			br.close();
 		} catch (Exception e) {

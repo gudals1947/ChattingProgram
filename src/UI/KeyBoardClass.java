@@ -1,5 +1,6 @@
 package UI;
 
+import java.awt.Color;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.ParseException;
@@ -42,18 +43,19 @@ public class KeyBoardClass extends KeyAdapter {
 	ArrayList<String> bookimages = new ArrayList<>();
 	ArrayList<String> booklink = new ArrayList<>();
 	ArrayList<JPanel> addPanel = new ArrayList<>();
-
+	String sort;
 	boolean boolcheak[];
 
 	public KeyBoardClass(ChattingForm superClass, APIExamSearchBlog apiExamSearchBlog,
-			APIExamSearchNews apiExamSearchNews, APIExamSearchencyc apiExamSearchencyc, boolean boolcheak[]) {
+			APIExamSearchNews apiExamSearchNews, APIExamSearchencyc apiExamSearchencyc, boolean boolcheak[],
+			String sort) {
 		// TODO Auto-generated constructor stub
 		this.superClass = superClass;
 		this.apiExamSearchBlog = apiExamSearchBlog;
 		this.apiExamSearchNews = apiExamSearchNews;
 		this.apiExamSearchencyc = apiExamSearchencyc;
 		this.boolcheak = boolcheak;
-
+		this.sort = sort;
 	}
 
 	@Override
@@ -61,54 +63,79 @@ public class KeyBoardClass extends KeyAdapter {
 		// TODO Auto-generated method stub
 		if (e.getKeyCode() == KeyEvent.VK_ENTER) {
 
-			totalsetting();
-			blogsetting();
-			addPanel.removeAll(addPanel);
-
-			addPanel.add(superClass.plContent);
-			addPanel.add(superClass.blogform[0]);
-			try {
-				for (int i = 0; i < addPanel.size(); i++) {
-					if (superClass.panel.getBounds().height == 0) {
-						superClass.panel.setBounds(0, 130, 964, 1120);
-						 superClass.plContent.setBounds(0, 53, 964, 1067);
-//						superClass.plContent.setBounds(0, 0, 0, 0);
-					} else if (superClass.panel.getBounds().height != 0) {
-						if (boolcheak[i] == true) {
-							addPanel.get(i).setBounds(0, 53, 964, 1067);
-							superClass.panel.add(addPanel.get(i));
-						}
-						if (boolcheak[i] == false) {
-							System.out.println("false값 실행:" + addPanel.get(i));
-							addPanel.get(i).setBounds(0, 0, 0, 0);
-							superClass.panel.remove(addPanel.get(i));
-						}
-					}
-				}
-			} catch (Exception e5) {
-				// TODO: handle exception
-				System.out.println(e5);
-			}
+			totalsetting(this.sort);
+			blogsetting(0);
+			Newssetting(0);
+			setting();
 			super.keyReleased(e);
+
 		}
 	}
 
-	private void blogsetting() {
+	public void setting() {
 		// TODO Auto-generated method stub
-		apiExamSearchBlog.searchBlog(superClass.tfSearch.getText());
+		addPanel.removeAll(addPanel);
+//		superClass.plContent.setName("통합검색");
+//		superClass.blogform[0].setName("블로그 더보기");
+		addPanel.add(superClass.plContent);
+		addPanel.add(superClass.blogform[0]);
+		addPanel.add(superClass.newsform[0]);
 
-		System.out.println((double)bloggerTitle.size() / 5.0);
+		for (int i = 0; i < superClass.blogform[0].lbNumber.length; i++) {
+			if (0 == i) {
+				superClass.blogform[0].lbNumber[0].setForeground(Color.green);
+				superClass.newsform[0].lbNumber[0].setForeground(Color.green);
+
+			} else {
+				superClass.blogform[0].lbNumber[0].setForeground(Color.black);
+				superClass.newsform[0].lbNumber[0].setForeground(Color.black);
+			}
+		}
+		try {
+
+			for (int i = 0; i < addPanel.size(); i++) {
+				if (superClass.panel.getBounds().height != 0) {
+					if (boolcheak[i] == true) {
+						// System.out.println(i);
+						superClass.panel.removeAll();
+						superClass.panel.add(superClass.plBar);
+						addPanel.get(i).setBounds(0, 53, 964, 1067);
+						superClass.panel.add(addPanel.get(i));
+						superClass.panel.updateUI();
+					} else if (boolcheak[i] == false) {
+//						System.out.println("false값 실행:" + addPanel.get(i));
+						addPanel.get(i).setBounds(0, 0, 0, 0);
+						superClass.panel.remove(addPanel.get(i));
+						superClass.panel.updateUI();
+
+					}
+				}
+			}
+			if (superClass.panel.getBounds().height == 0) {
+				superClass.panel.setBounds(0, 130, 964, 1120);
+				superClass.plContent.setBounds(0, 53, 964, 1067);
+
+			}
+		} catch (Exception e5) {
+
+			System.out.println(e5);
+		}
+	}
+
+	public void blogsetting(int sort) {
+		// TODO Auto-generated method stub
 		superClass.blogform = new BlogForm[(int) Math.ceil(bloggerTitle.size() / 5)];
+		// System.out.println(bloggerTitle);
 		for (int i = 0; i < superClass.blogform.length; i++) {
-			superClass.blogform[i] = new BlogForm((int) Math.ceil(bloggerTitle.size() / 5), i);
+			superClass.blogform[i] = new BlogForm(this, superClass, (int) Math.ceil(bloggerTitle.size() / 5), i);
 			try {
-				for (int j = 0; j < 5; j++) {
-					superClass.blogform[i].lbblogtitle[j].setText("<html><body><a href='" + bloglink.get(j) + "'>"
+				for (int j = i * 5; j < (i + 1) * 5; j++) {
+					superClass.blogform[i].lbblogtitle[j % 5].setText("<html><body><a href='" + bloglink.get(j) + "'>"
 							+ bloggerTitle.get(j) + "</a><b style='color:gray'> &nbsp; &nbsp;" + bloggerPostDate.get(j)
 							+ "</b></body></html>");
-					superClass.blogform[i].lbblogcontents[j]
+					superClass.blogform[i].lbblogcontents[j % 5]
 							.setText("<html><body>" + bloggerContents.get(j) + "</body></html>");
-					superClass.blogform[i].lbblogbotton[j].setText("<html><body><a href='" + bloglink.get(j)
+					superClass.blogform[i].lbblogbotton[j % 5].setText("<html><body><a href='" + bloglink.get(j)
 							+ "' style='text-decoration:none'><b style='color:gray'>" + bloggername.get(j)
 							+ "</b>&nbsp;</a><a href='" + bloglink.get(j)
 							+ "' style='text-decoration:none'><b style='color:green'>" + bloggerlink.get(j)
@@ -116,18 +143,56 @@ public class KeyBoardClass extends KeyAdapter {
 				}
 			} catch (Exception e1) {
 				// TODO: handle exception
+
+			}
+			if (sort == 0) {
+				superClass.blogform[i].rbSim.setSelected(true);
+				superClass.blogform[i].rbSort.setSelected(false);
 				
+			} else if (sort == 1) {
+				superClass.blogform[i].rbSim.setSelected(false);
+				superClass.blogform[i].rbSort.setSelected(true);
+
 			}
 		}
 
 	}
 
-	private void totalsetting() {
+	public void Newssetting(int sort) {
+		// TODO Auto-generated method stub
+		superClass.newsform = new NewsForm[(int) Math.ceil(newsTitle.size() / 5)];
+		// System.out.println(bloggerTitle);
+		for (int i = 0; i < superClass.newsform.length; i++) {
+			superClass.newsform[i] = new NewsForm(this, superClass, (int) Math.ceil(newsTitle.size() / 5), i);
+			try {
+				for (int j = i * 5; j < (i + 1) * 5; j++) {
+					superClass.newsform[i].lbNewstitle[j%5].setText("<html><body><a href='" + originallink.get(j) + "'>"
+							+ newsTitle.get(j) + "</a><b style='color:gray'>&nbsp;&nbsp;" + total.get(j)
+							+ "</b>&nbsp;&nbsp;:<a href='" + newslink.get(j)
+							+ "' style='text-decoration:none'><b style='color:gray'>네이버 뉴스 </b></body></html>");
+					superClass.newsform[i].lbNewscontents[j%5].setText("<html><body>" + newsdescription.get(j) + "</body></html>");
+				}
+			} catch (Exception e1) {
+				// TODO: handle exception
+
+			}
+			if (sort == 0) {
+				superClass.newsform[i].rbSim.setSelected(true);
+				superClass.newsform[i].rbSort.setSelected(false);
+			} else if (sort == 1) {
+				superClass.newsform[i].rbSim.setSelected(false);
+				superClass.newsform[i].rbSort.setSelected(true);
+			}
+		}
+
+	}
+
+	public void totalsetting(String sort) {
 		// TODO Auto-generated method stub
 		Removelist();
-		apiExamSearchBlog.searchBlog(superClass.tfSearch.getText());
-		apiExamSearchNews.searchNews(superClass.tfSearch.getText());
-		apiExamSearchencyc.SearchEncyc(superClass.tfSearch.getText());
+		apiExamSearchBlog.searchBlog(superClass.tfSearch.getText(), sort);
+		apiExamSearchNews.searchNews(superClass.tfSearch.getText(), sort);
+		apiExamSearchencyc.SearchEncyc(superClass.tfSearch.getText(), sort);
 
 		bloggerTitle = apiExamSearchBlog.getTitle();
 		bloggerPostDate = apiExamSearchBlog.getPostdate();
@@ -139,9 +204,8 @@ public class KeyBoardClass extends KeyAdapter {
 		newsTitle = apiExamSearchNews.getTitle();
 		originallink = apiExamSearchNews.getOriginallink();
 		newsdescription = apiExamSearchNews.getDescription();
-		calDateBetweenAandB();
 		newslink = apiExamSearchNews.getLink();
-		// System.out.println(pubDate);
+		calDateBetweenAandB();
 
 		bookTitle = apiExamSearchencyc.getTitle();
 		bookimages = apiExamSearchencyc.getThumnail();
@@ -161,6 +225,7 @@ public class KeyBoardClass extends KeyAdapter {
 				superClass.lbBlogTitle[i].setText("<html><body><a href='" + bloglink.get(i) + "'>" + bloggerTitle.get(i)
 						+ "</a><b style='color:gray'> &nbsp; &nbsp;" + bloggerPostDate.get(i) + "</b></body></html>");
 				superClass.lbBlogContents[i].setText("<html><body>" + bloggerContents.get(i) + "</body></html>");
+
 				superClass.lbBlogbotton[i].setText("<html><body><a href='" + bloglink.get(i)
 						+ "' style='text-decoration:none'><b style='color:gray'>" + bloggername.get(i)
 						+ "</b>&nbsp;</a><a href='" + bloglink.get(i)

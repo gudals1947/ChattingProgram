@@ -10,6 +10,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.io.IOException;
+import java.lang.reflect.Array;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -51,11 +52,12 @@ public class ChattingForm extends JFrame implements MouseListener {
 	JLabel[] upLable = new JLabel[] { lbchat, lbfreind, lbhome, lboption, lbLogout };
 	JPanel[] upPanel = new JPanel[] { plchat, plfriend, plHome, ploption, plLogout };
 	String[] iconpath = new String[] { "chat", "support", "home", "settings-work-tool", "logout" };
-	
+
 	boolean[] boolIcon = new boolean[] { false, false, true, false, false };
 	boolean[] boolcheck = new boolean[] { true, false, false, false };
-	
+
 	int key = 0;
+	// int count=0;
 	JTextField tfSearch;
 	JLabel label_1 = new JLabel("KHMCS");
 	JLabel lbBarBlog = new JLabel("블로그");
@@ -94,6 +96,7 @@ public class ChattingForm extends JFrame implements MouseListener {
 
 	JPanel panel = new JPanel();
 	BlogForm blogform[];
+	NewsForm newsform[];
 
 	public ChattingForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -154,7 +157,6 @@ public class ChattingForm extends JFrame implements MouseListener {
 		lblist.setBounds(17, 9, 37, 35);
 		pl_North.add(lblist);
 		pl_left.setBackground(Color.BLACK);
-		// System.out.println(this.getBounds().height);
 
 		pl_left.setBounds(0, 53, 0, this.getBounds().height);
 		contentPane.add(pl_left);
@@ -178,8 +180,9 @@ public class ChattingForm extends JFrame implements MouseListener {
 		tfSearch.setBounds(219, 70, 552, 41);
 		pl_home.add(tfSearch);
 		tfSearch.setColumns(10);
-		tfSearch.addKeyListener(new KeyBoardClass(this, new APIExamSearchBlog(), new APIExamSearchNews(), new APIExamSearchencyc(),boolcheck));
-		
+		tfSearch.addKeyListener(new KeyBoardClass(this, new APIExamSearchBlog(), new APIExamSearchNews(),
+				new APIExamSearchencyc(), boolcheck, "sim"));
+
 		label_1.setForeground(new Color(50, 205, 50));
 		label_1.setFont(new Font("굴림", Font.PLAIN, 35));
 		label_1.setBounds(46, 73, 123, 35);
@@ -202,10 +205,7 @@ public class ChattingForm extends JFrame implements MouseListener {
 		panel.setBounds(0, 0, 0, 0);
 		pl_home.add(panel);
 		panel.setLayout(null);
-
-		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 0, 964, 2);
-		panel.add(separator);
+		plBar.setBorder(new LineBorder(Color.LIGHT_GRAY, 2));
 		plBar.setBounds(0, 0, 964, 53);
 		panel.add(plBar);
 		plBar.setBackground(new Color(255, 255, 255));
@@ -214,16 +214,17 @@ public class ChattingForm extends JFrame implements MouseListener {
 		plBar.add(lbBarSearch);
 		lbBarSearch.setFont(new Font("HY엽서M", Font.PLAIN, 30));
 		lbBarSearch.setForeground(new Color(50, 205, 50));
-	
+		lbBarSearch.addMouseListener(new PanelchangeEvent(this, 0, "통합검색"));
 
 		plBar.add(lbBarBlog);
 		lbBarBlog.setForeground(new Color(0, 0, 0));
 		lbBarBlog.setFont(new Font("HY엽서M", Font.PLAIN, 30));
-
+		lbBarBlog.addMouseListener(new PanelchangeEvent(this, 1, "더보기"));
 
 		plBar.add(lbBarNew);
 		lbBarNew.setForeground(new Color(0, 0, 0));
 		lbBarNew.setFont(new Font("HY엽서M", Font.PLAIN, 30));
+		lbBarNew.addMouseListener(new PanelchangeEvent(this, 2, "더보기"));
 
 		plBar.add(lbBarBook);
 		lbBarBook.setForeground(new Color(0, 0, 0));
@@ -248,16 +249,13 @@ public class ChattingForm extends JFrame implements MouseListener {
 		edBlog.setContentType("text/html");
 		edBlog.setEditable(false);
 		edBlog.setText("<html><body><a href=http:블로그 더보기>블로그 더보기</body></html>");
+		edBlog.addMouseListener(new PanelchangeEvent(this, 1, "더보기"));
 		plBlog.add(edBlog);
 
 		plBlogContent.setBackground(Color.WHITE);
 		plBlogContent.setBounds(0, 65, 964, 204);
 		plBlog.add(plBlogContent);
 		plBlogContent.setLayout(new GridLayout(0, 1, 0, 0));
-
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(0, 0, 964, 2);
-		plBlog.add(separator_1);
 		plNews.setBackground(new Color(255, 255, 255));
 
 		plContent.add(plNews);
@@ -270,6 +268,7 @@ public class ChattingForm extends JFrame implements MouseListener {
 		edNews.setContentType("text/html");
 		edNews.setEditable(false);
 		edNews.setText("<html><body><a href=http:뉴스 더보기>뉴스 더보기</body></html>");
+		edNews.addMouseListener(new PanelchangeEvent(this, 2, "더보기"));
 		edNews.setBounds(802, 272, 162, 35);
 
 		plNews.add(edNews);
