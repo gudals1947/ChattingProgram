@@ -2,10 +2,17 @@ package UI;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
@@ -14,6 +21,8 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
+import javax.swing.event.HyperlinkEvent;
+import javax.swing.event.HyperlinkListener;
 
 public class NewsForm extends JPanel {
 
@@ -30,6 +39,7 @@ public class NewsForm extends JPanel {
 	KeyBoardClass keyBoardClass;
 	JRadioButton rbSim = new JRadioButton("정확도 순");
 	JRadioButton rbSort = new JRadioButton("최신 순");
+	int number;
 
 	public NewsForm(KeyBoardClass keyboardclass, ChattingForm form, int count, int check) {
 		this.keyBoardClass = keyboardclass;
@@ -98,6 +108,16 @@ public class NewsForm extends JPanel {
 		plBotton.setBackground(Color.WHITE);
 		add(plBotton, BorderLayout.SOUTH);
 
+		start();
+
+	}
+
+	private void start() {
+		// TODO Auto-generated method stub
+		for (int i = 0; i < lbNewstitle.length; i++) {
+			lbNewstitle[i].setName("블로그");
+			lbNewstitle[i].addMouseListener(new MouseClickEvent(this,i));
+		}
 	}
 
 	private void setting() {
@@ -131,5 +151,50 @@ public class NewsForm extends JPanel {
 			plNews[i].add(lbNewsbotton[i]);
 			plNewsContents.add(plNews[i]);
 		}
+	}
+}
+
+class Hyperlink2Class implements HyperlinkListener {
+	int number;
+	NewsForm form;
+	public Hyperlink2Class(NewsForm form, int number) {
+		// TODO Auto-generated constructor stub
+		this.number = number;
+		this.form = form;
+	}
+
+	@Override
+	public void hyperlinkUpdate(HyperlinkEvent e) {
+		// TODO Auto-generated method stub
+		URI uri;
+		try {
+			uri = new URI(e.getURL().toString());
+			Desktop.getDesktop().browse(uri);
+		} catch (IOException | URISyntaxException e2) {
+			// TODO: handle exception
+		}
+		form.lbNewstitle[number].removeHyperlinkListener(this);		
+	}
+}
+
+class MouseClickEvent extends MouseAdapter{
+	int number;
+	NewsForm form;
+	public MouseClickEvent(NewsForm form,int number) {
+		// TODO Auto-generated constructor stub
+		this.number = number;
+		this.form = form;
+	}
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+//		form.lbNewstitle[number].addHyperlinkListener(new Hyperlink2Class(form,this.number));
+		super.mouseClicked(e);
+	}
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		form.lbNewstitle[number].addHyperlinkListener(new Hyperlink2Class(form,this.number));
+		super.mousePressed(e);
 	}
 }

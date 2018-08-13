@@ -35,7 +35,9 @@ public class PanelchangeEvent extends MouseAdapter {
 			keyBoardClass.totalsetting("sim");
 			keyBoardClass.blogsetting(0);
 			keyBoardClass.Newssetting(0);
+			keyBoardClass.booksetting(0);
 			keyBoardClass.setting();
+			
 			// superclass.panel.add(superclass.separator);
 		}
 		JLabel lb[] = { superclass.lbBarSearch, superclass.lbBarBlog, superclass.lbBarNew, superclass.lbBarBook };
@@ -43,6 +45,7 @@ public class PanelchangeEvent extends MouseAdapter {
 		addPanel.add(superclass.plContent);
 		addPanel.add(superclass.blogform[0]);
 		addPanel.add(superclass.newsform[0]);
+		addPanel.add(superclass.bookform[0]);
 		for (int i = 0; i < superclass.boolcheck.length; i++) {
 			if (count == i) {
 				lb[i].setForeground(Color.green);
@@ -63,11 +66,7 @@ public class PanelchangeEvent extends MouseAdapter {
 						superclass.panel.add(addPanel.get(i));
 						superclass.panel.updateUI();
 					}
-//					} else if (superclass.boolcheck[i] == false && i != 0) {
-//						superclass.panel.removeAll();
-//				
-//						superclass.panel.updateUI();
-//					}
+
 				}
 			}
 		} catch (Exception e5) {

@@ -1,8 +1,9 @@
 package UI;
 
-import javax.swing.JPanel;
+import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Desktop;
+import java.awt.Font;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -11,28 +12,24 @@ import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.awt.BorderLayout;
 
 import javax.swing.BorderFactory;
 import javax.swing.ButtonGroup;
 import javax.swing.JEditorPane;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 
-import java.awt.FlowLayout;
-import javax.swing.JSeparator;
-import javax.swing.JRadioButton;
-import java.awt.Font;
+public class BookForm extends JPanel {
 
-public class BlogForm extends JPanel {
-
-	JPanel plblog[] = new JPanel[5];
-	JPanel plBlogContents = new JPanel();
-	JEditorPane lbblogtitle[] = new JEditorPane[5];
-	JEditorPane lbblogcontents[] = new JEditorPane[5];
-	JEditorPane lbblogbotton[] = new JEditorPane[5];
+	JPanel plbooks[] = new JPanel[5];
+	JPanel plbooksContents = new JPanel();
+	JEditorPane lbbookstitle[] = new JEditorPane[5];
+	JEditorPane lbbookscontents[] = new JEditorPane[5];
+	JEditorPane lbbooksbotton[] = new JEditorPane[5];
 	JLabel lbNumber[];
 	JPanel plBotton = new JPanel();
 	ButtonGroup group = new ButtonGroup();
@@ -42,7 +39,7 @@ public class BlogForm extends JPanel {
 	JRadioButton rbSim = new JRadioButton("정확도 순");
 	JRadioButton rbSort = new JRadioButton("최신 순");
 
-	public BlogForm(KeyBoardClass keyboardclass, ChattingForm form, int count, int check) {
+	public BookForm(KeyBoardClass keyboardclass, ChattingForm form, int count, int check) {
 		this.keyBoardClass = keyboardclass;
 		this.form = form;
 		lbNumber = new JLabel[count];
@@ -59,7 +56,7 @@ public class BlogForm extends JPanel {
 		add(plTop, BorderLayout.NORTH);
 		plTop.setLayout(new BorderLayout(0, 0));
 
-		JLabel lbBlog = new JLabel("블로그");
+		JLabel lbBlog = new JLabel("백과사전");
 		lbBlog.setFont(new Font("굴림", Font.BOLD, 27));
 		lbBlog.setHorizontalAlignment(SwingConstants.LEFT);
 		plTop.add(lbBlog, BorderLayout.WEST);
@@ -79,7 +76,7 @@ public class BlogForm extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				keyboardclass.totalsetting("sim");
-				keyboardclass.blogsetting(0);
+				keyboardclass.booksetting(0);
 				keyboardclass.setting();
 				rbSim.removeActionListener(this);
 			}
@@ -95,16 +92,16 @@ public class BlogForm extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				keyboardclass.totalsetting("date");
-				keyboardclass.blogsetting(1);
+				keyboardclass.booksetting(1);
 				keyboardclass.setting();
 				rbSort.removeActionListener(this);
 			}
 		});
 
-		plBlogContents.setBackground(Color.white);
-		plBlogContents.setBorder(BorderFactory.createLineBorder(Color.white, 5));
-		add(plBlogContents, BorderLayout.CENTER);
-		plBlogContents.setLayout(new GridLayout(0, 1, 0, 0));
+		plbooksContents.setBackground(Color.white);
+		plbooksContents.setBorder(BorderFactory.createLineBorder(Color.white, 5));
+		add(plbooksContents, BorderLayout.CENTER);
+		plbooksContents.setLayout(new GridLayout(0, 1, 0, 0));
 
 		plBotton.setBackground(Color.WHITE);
 		add(plBotton, BorderLayout.SOUTH);
@@ -120,40 +117,38 @@ public class BlogForm extends JPanel {
 				lbNumber[check].setForeground(Color.green);
 				lbNumber[check].setBorder(BorderFactory.createLineBorder(Color.green, 3));
 			}
-			lbNumber[i].addMouseListener(new ChoiceEvent(form, this, i, 0));
+			lbNumber[i].addMouseListener(new ChoiceEvent(form, this, i, 2));
 			plBotton.add(lbNumber[i]);
 		}
 
-		for (int i = 0; i < plblog.length; i++) {
-			plblog[i] = new JPanel(new GridLayout(3, 1, 0, 0));
-			lbblogtitle[i] = new JEditorPane();
-			lbblogcontents[i] = new JEditorPane();
-			lbblogbotton[i] = new JEditorPane();
+		for (int i = 0; i < plbooks.length; i++) {
+			plbooks[i] = new JPanel(new BorderLayout());
+			lbbookstitle[i] = new JEditorPane();
+			lbbookscontents[i] = new JEditorPane();
+			lbbooksbotton[i] = new JEditorPane();
 
-			lbblogtitle[i].setContentType("text/html");
-			lbblogtitle[i].setEditable(false);
-			lbblogcontents[i].setContentType("text/html");
-			lbblogcontents[i].setEditable(false);
-			lbblogbotton[i].setContentType("text/html");
-			lbblogbotton[i].setEditable(false);
+			lbbookstitle[i].setContentType("text/html");
+			lbbookstitle[i].setEditable(false);
+			lbbookscontents[i].setContentType("text/html");
+			lbbookscontents[i].setEditable(false);
+			lbbooksbotton[i].setContentType("text/html");
+			lbbooksbotton[i].setEditable(false);
 
-			plblog[i].add(lbblogtitle[i]);
-			plblog[i].add(lbblogcontents[i]);
-			plblog[i].add(lbblogbotton[i]);
-			plBlogContents.add(plblog[i]);
+			plbooks[i].add(lbbookstitle[i], BorderLayout.NORTH);
+			plbooks[i].add(lbbookscontents[i], BorderLayout.CENTER);
+			plbooks[i].add(lbbooksbotton[i], BorderLayout.WEST);
+			plbooksContents.add(plbooks[i]);
 			
-			lbblogtitle[i].addMouseListener(new MouseClickEvent3(this, i));
-			lbblogbotton[i].addMouseListener(new MouseClickEvent3(this, i));
+			lbbookstitle[i].addMouseListener(new MouseClickEvent2(this, i));
 		}
 	}
-
 }
 
-class HyperlinkClass4 implements HyperlinkListener {
+class HyperlinkClass3 implements HyperlinkListener {
 	int number;
-	BlogForm form;
+	BookForm form;
 
-	public HyperlinkClass4(BlogForm form, int number) {
+	public HyperlinkClass3(BookForm form, int number) {
 		// TODO Auto-generated constructor stub
 		this.number = number;
 		this.form = form;
@@ -169,16 +164,15 @@ class HyperlinkClass4 implements HyperlinkListener {
 		} catch (IOException | URISyntaxException e2) {
 			// TODO: handle exception
 		}
-		form.lbblogtitle[number].removeHyperlinkListener(this);
-		form.lbblogbotton[number].removeHyperlinkListener(this);
+		form.lbbookstitle[number].removeHyperlinkListener(this);
 	}
 }
 
-class MouseClickEvent3 extends MouseAdapter {
+class MouseClickEvent2 extends MouseAdapter {
 	int number;
-	BlogForm form;
+	BookForm form;
 
-	public MouseClickEvent3(BlogForm form, int number) {
+	public MouseClickEvent2(BookForm form, int number) {
 		// TODO Auto-generated constructor stub
 		this.number = number;
 		this.form = form;
@@ -187,8 +181,7 @@ class MouseClickEvent3 extends MouseAdapter {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		form.lbblogtitle[number].addHyperlinkListener(new HyperlinkClass4(form, this.number));
-		form.lbblogbotton[number].addHyperlinkListener(new HyperlinkClass4(form, this.number));
+		form.lbbookstitle[number].addHyperlinkListener(new HyperlinkClass3(form, this.number));
 		super.mousePressed(e);
 	}
 }

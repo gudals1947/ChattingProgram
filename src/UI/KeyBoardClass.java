@@ -66,6 +66,7 @@ public class KeyBoardClass extends KeyAdapter {
 			totalsetting(this.sort);
 			blogsetting(0);
 			Newssetting(0);
+			booksetting(0);
 			setting();
 			super.keyReleased(e);
 
@@ -75,22 +76,27 @@ public class KeyBoardClass extends KeyAdapter {
 	public void setting() {
 		// TODO Auto-generated method stub
 		addPanel.removeAll(addPanel);
-//		superClass.plContent.setName("통합검색");
-//		superClass.blogform[0].setName("블로그 더보기");
 		addPanel.add(superClass.plContent);
 		addPanel.add(superClass.blogform[0]);
 		addPanel.add(superClass.newsform[0]);
+		addPanel.add(superClass.bookform[0]);
+		try {
+			for (int i = 0; i < superClass.blogform[0].lbNumber.length; i++) {
+				if (0 == i) {
+					superClass.blogform[0].lbNumber[0].setForeground(Color.green);
+					superClass.newsform[0].lbNumber[0].setForeground(Color.green);
+					superClass.bookform[0].lbNumber[0].setForeground(Color.green);
 
-		for (int i = 0; i < superClass.blogform[0].lbNumber.length; i++) {
-			if (0 == i) {
-				superClass.blogform[0].lbNumber[0].setForeground(Color.green);
-				superClass.newsform[0].lbNumber[0].setForeground(Color.green);
-
-			} else {
-				superClass.blogform[0].lbNumber[0].setForeground(Color.black);
-				superClass.newsform[0].lbNumber[0].setForeground(Color.black);
+				} else {
+					superClass.blogform[0].lbNumber[0].setForeground(Color.black);
+					superClass.newsform[0].lbNumber[0].setForeground(Color.black);
+					superClass.bookform[0].lbNumber[0].setForeground(Color.black);
+				}
 			}
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
+
 		try {
 
 			for (int i = 0; i < addPanel.size(); i++) {
@@ -103,7 +109,7 @@ public class KeyBoardClass extends KeyAdapter {
 						superClass.panel.add(addPanel.get(i));
 						superClass.panel.updateUI();
 					} else if (boolcheak[i] == false) {
-//						System.out.println("false값 실행:" + addPanel.get(i));
+						// System.out.println("false값 실행:" + addPanel.get(i));
 						addPanel.get(i).setBounds(0, 0, 0, 0);
 						superClass.panel.remove(addPanel.get(i));
 						superClass.panel.updateUI();
@@ -122,6 +128,46 @@ public class KeyBoardClass extends KeyAdapter {
 		}
 	}
 
+	public void booksetting(int sort) {
+		// TODO Auto-generated method stub
+		superClass.bookform = new BookForm[(int) Math.ceil(bloggerTitle.size() / 5)];
+		System.out.println(superClass.bookform.length);
+		for (int i = 0; i < superClass.bookform.length; i++) {
+			superClass.bookform[i] = new BookForm(this, superClass, (int) Math.ceil(bookTitle.size() / 5), i);
+			try {
+				for (int j = i * 5; j < (i + 1) * 5; j++) {
+					if (!bookimages.get(i).equals("")) {
+						superClass.bookform[i].lbbookstitle[j % 5].setText("<html><body><a href='" + booklink.get(j)
+								+ "'>" + bookTitle.get(j) + "</a></body></html>");
+						superClass.bookform[i].lbbooksbotton[j % 5]
+								.setText("<html><body><img src='" + bookimages.get(j) + "'></body></html>");
+						superClass.bookform[i].lbbookscontents[j % 5]
+								.setText("<html><body>" + bookcontents.get(j) + "</body></html>");
+					} else {
+						superClass.bookform[i].lbbookstitle[j % 5].setText("<html><body><a href='" + booklink.get(j)
+								+ "'>" + bookTitle.get(j) + "</a></body></html>");
+						superClass.bookform[i].lbbooksbotton[j % 5].setText("<html><body></body></html>");
+						superClass.bookform[i].lbbookscontents[j % 5]
+								.setText("<html><body>" + bookcontents.get(j) + "</body></html>");
+					}
+				}
+			} catch (Exception e1) {
+				// TODO: handle exception
+
+			}
+			if (sort == 0) {
+				superClass.bookform[i].rbSim.setSelected(true);
+				superClass.bookform[i].rbSort.setSelected(false);
+
+			} else if (sort == 1) {
+				superClass.bookform[i].rbSim.setSelected(false);
+				superClass.bookform[i].rbSort.setSelected(true);
+
+			}
+		}
+
+	}
+
 	public void blogsetting(int sort) {
 		// TODO Auto-generated method stub
 		superClass.blogform = new BlogForm[(int) Math.ceil(bloggerTitle.size() / 5)];
@@ -129,26 +175,30 @@ public class KeyBoardClass extends KeyAdapter {
 		for (int i = 0; i < superClass.blogform.length; i++) {
 			superClass.blogform[i] = new BlogForm(this, superClass, (int) Math.ceil(bloggerTitle.size() / 5), i);
 			try {
+
 				for (int j = i * 5; j < (i + 1) * 5; j++) {
+
 					superClass.blogform[i].lbblogtitle[j % 5].setText("<html><body><a href='" + bloglink.get(j) + "'>"
 							+ bloggerTitle.get(j) + "</a><b style='color:gray'> &nbsp; &nbsp;" + bloggerPostDate.get(j)
 							+ "</b></body></html>");
 					superClass.blogform[i].lbblogcontents[j % 5]
 							.setText("<html><body>" + bloggerContents.get(j) + "</body></html>");
+
 					superClass.blogform[i].lbblogbotton[j % 5].setText("<html><body><a href='" + bloglink.get(j)
 							+ "' style='text-decoration:none'><b style='color:gray'>" + bloggername.get(j)
 							+ "</b>&nbsp;</a><a href='" + bloglink.get(j)
 							+ "' style='text-decoration:none'><b style='color:green'>" + bloggerlink.get(j)
 							+ "</b></a></body></html>");
 				}
-			} catch (Exception e1) {
-				// TODO: handle exception
 
+			} catch (Exception e3) {
+				// TODO: handle exception
+				System.out.println(e3);
 			}
 			if (sort == 0) {
 				superClass.blogform[i].rbSim.setSelected(true);
 				superClass.blogform[i].rbSort.setSelected(false);
-				
+
 			} else if (sort == 1) {
 				superClass.blogform[i].rbSim.setSelected(false);
 				superClass.blogform[i].rbSort.setSelected(true);
@@ -166,11 +216,12 @@ public class KeyBoardClass extends KeyAdapter {
 			superClass.newsform[i] = new NewsForm(this, superClass, (int) Math.ceil(newsTitle.size() / 5), i);
 			try {
 				for (int j = i * 5; j < (i + 1) * 5; j++) {
-					superClass.newsform[i].lbNewstitle[j%5].setText("<html><body><a href='" + originallink.get(j) + "'>"
-							+ newsTitle.get(j) + "</a><b style='color:gray'>&nbsp;&nbsp;" + total.get(j)
+					superClass.newsform[i].lbNewstitle[j % 5].setText("<html><body><a href='" + originallink.get(j)
+							+ "'>" + newsTitle.get(j) + "</a><b style='color:gray'>&nbsp;&nbsp;" + total.get(j)
 							+ "</b>&nbsp;&nbsp;:<a href='" + newslink.get(j)
 							+ "' style='text-decoration:none'><b style='color:gray'>네이버 뉴스 </b></body></html>");
-					superClass.newsform[i].lbNewscontents[j%5].setText("<html><body>" + newsdescription.get(j) + "</body></html>");
+					superClass.newsform[i].lbNewscontents[j % 5]
+							.setText("<html><body>" + newsdescription.get(j) + "</body></html>");
 				}
 			} catch (Exception e1) {
 				// TODO: handle exception

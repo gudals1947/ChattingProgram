@@ -57,7 +57,6 @@ public class ChattingForm extends JFrame implements MouseListener {
 	boolean[] boolcheck = new boolean[] { true, false, false, false };
 
 	int key = 0;
-	// int count=0;
 	JTextField tfSearch;
 	JLabel label_1 = new JLabel("KHMCS");
 	JLabel lbBarBlog = new JLabel("블로그");
@@ -97,6 +96,7 @@ public class ChattingForm extends JFrame implements MouseListener {
 	JPanel panel = new JPanel();
 	BlogForm blogform[];
 	NewsForm newsform[];
+	BookForm bookform[];
 
 	public ChattingForm() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -229,6 +229,7 @@ public class ChattingForm extends JFrame implements MouseListener {
 		plBar.add(lbBarBook);
 		lbBarBook.setForeground(new Color(0, 0, 0));
 		lbBarBook.setFont(new Font("HY엽서M", Font.PLAIN, 30));
+		lbBarBook.addMouseListener(new PanelchangeEvent(this, 3, "더보기"));
 
 		plContent.setBounds(0, 53, 964, 1067);
 		panel.add(plContent);
@@ -289,6 +290,7 @@ public class ChattingForm extends JFrame implements MouseListener {
 		edBook.setContentType("text/html");
 		edBook.setEditable(false);
 		edBook.setText("<html><body><a href=http:사전 더보기>사전 더보기</body></html>");
+		edBook.addMouseListener(new PanelchangeEvent(this, 3, "더보기"));
 		edBook.setBounds(802, 272, 162, 35);
 
 		plBooks.add(edBook);

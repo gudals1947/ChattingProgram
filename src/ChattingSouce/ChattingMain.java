@@ -11,7 +11,7 @@ public class ChattingMain {
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-
+		new DBTest();
 		new Form();
 	}
 }

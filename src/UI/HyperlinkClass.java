@@ -29,11 +29,15 @@ class HyperlinkClass extends MouseAdapter {
 	@Override
 	public void mousePressed(MouseEvent e) {
 		// TODO Auto-generated method stub
-		String str[] = { "블로그", "뉴스" };
+		String str[] = { "블로그", "뉴스" ,"백과사전"};
 		ArrayList<JEditorPane[]> formlb = new ArrayList();
 		formlb.add(form.lbBlogTitle);
 		formlb.add(form.lbBlogbotton);
 		formlb.add(form.lbNewTitle);
+		formlb.add(form.lbBookTitle);
+//		formlb.add(form.newsform.);
+//		formlb.add(form.lbNewTitle);
+		
 		for (int i = 0; i < str.length; i++) {
 			if (name.equals(str[i])) {
 				for (int j = 0; j < formlb.size(); j++) {

@@ -30,6 +30,7 @@ public class ChoiceEvent extends MouseAdapter {
 		ArrayList<JPanel[]> objects = new ArrayList<>();
 		objects.add(form.blogform);
 		objects.add(form.newsform);
+		objects.add(form.bookform);
 		form.panel.removeAll();
 		form.panel.add(form.plBar);
 		for (int i = 0; i < objects.size(); i++) {
